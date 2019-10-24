@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Node JS 实例</title>
+<script src="jquery-3.4.1.min.js"></script>
+<script>
+$.get("http://localhost:8080/dept/select.do", function(data){ 
+   var html=""
+   if(data.length==0){
+      html+="暂无数据"
+   }else{
+      for(var i=0;i<data.length;i++){
+         html+="<tr>"
+         +"<td>"+data[i].DEPTNO+"</td>"
+         +"<td>"+data[i].DNAME+"</td>"
+         +"<td>"+data[i].LOC+"</td>"
+         +"</tr>";
+      }  
+   }
+   $('.deptList').append(html)
+});
+$(function(){
+   $('input[name="search"]').click(function(){
+      $.post("http://localhost:8080/dept/select.do","keyWord="+$('input[name="keyWord"]').val(), function(data){
+         var html="<tr>"
+         +"<td>部门编号</td>"
+         +"<td>部门名称</td>"
+         +"<td>部门地址</td>"
+         +"</tr>"
+      if(data.length==0){
+         html+="<tr><td>暂无数据</td></tr>"
+      }else{
+            for(var i=0;i<data.length;i++){
+               html+="<tr>"
+               +"<td>"+data[i].DEPTNO+"</td>"
+               +"<td>"+data[i].DNAME+"</td>"
+               +"<td>"+data[i].LOC+"</td>"
+               +"</tr>";
+            }
+            
+      }
+      $('.deptList').html(html)
+});
+   })
+})
+</script>
+</head>
+<body>
+   <input type="text" name="keyWord" id="keyWord">
+   <input type="button" value="搜索" name="search">
+   <table class="deptList">
+      <tr>
+         <td>部门编号</td>
+         <td>部门名称</td>
+         <td>部门地址</td>
+      </tr>
+   </table>
+</body>
+</html>
